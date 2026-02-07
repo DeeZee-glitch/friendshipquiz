@@ -36,6 +36,7 @@ const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
 ## 4) Enable inserts (Row Level Security)
 
 In Supabase:
+
 1. Go to **Table Editor → responses → RLS** and enable RLS.
 2. Add this policy to allow inserts from the public app:
 
