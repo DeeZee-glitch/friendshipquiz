@@ -1,4 +1,5 @@
-const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxNb_SWThf3K3531wYLfu1bVk89Mbkf-luRsurvorEoF2Dkiu7E2Vk4vLjVcoHXw9Rz0g/exec";
+const SUPABASE_URL = "https://ghiuxjeafbazwtklyoze.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_H9JModzLitS3PW9xFpDMyA_O3mj4OvQ";
 
 const questions = [
   "When did we first meet?",
@@ -71,22 +72,37 @@ const buildPayload = (answers) => ({
   submittedAt: new Date().toISOString(),
 });
 
-const submitToSheet = async (payload) => {
-  if (!SHEET_WEBAPP_URL || SHEET_WEBAPP_URL.includes("PASTE_YOUR")) {
-    throw new Error("Missing Google Sheets web app URL.");
+const getSupabaseClient = () => {
+  if (
+    !SUPABASE_URL ||
+    SUPABASE_URL.includes("PASTE_YOUR") ||
+    !SUPABASE_ANON_KEY ||
+    SUPABASE_ANON_KEY.includes("PASTE_YOUR")
+  ) {
+    throw new Error("Missing Supabase configuration.");
   }
 
-  const response = await fetch(SHEET_WEBAPP_URL, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "text/plain",
-    },
-    body: JSON.stringify(payload),
-  });
+  if (!window.supabase) {
+    throw new Error("Supabase client not loaded.");
+  }
 
-  if (!response.ok) {
-    throw new Error("Submission failed.");
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+};
+
+const submitResponse = async (payload) => {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.from("responses").insert([
+    {
+      name: payload.name || null,
+      answers: payload.answers,
+      answered_count: payload.answeredCount,
+      questions: payload.questions,
+      submitted_at: payload.submittedAt,
+    },
+  ]);
+
+  if (error) {
+    throw new Error(error.message || "Submission failed.");
   }
 };
 
@@ -115,7 +131,7 @@ quizForm.addEventListener("submit", async (event) => {
   submitBtn.textContent = "Submitting...";
 
   try {
-    await submitToSheet(payload);
+    await submitResponse(payload);
     setResult(
       `
         <h2>Thanks for playing!</h2>
