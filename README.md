@@ -13,6 +13,19 @@ This project can save quiz answers to a Google Sheet using a free Apps Script we
 2. Replace the default code with this:
 
 ```javascript
+function buildCorsResponse(payload) {
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeader("Access-Control-Allow-Origin", "*")
+    .setHeader("Access-Control-Allow-Methods", "POST, OPTIONS")
+    .setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
+
+function doOptions() {
+  return buildCorsResponse({ status: "ok" });
+}
+
 function doPost(e) {
   const data = JSON.parse(e.postData.contents || "{}");
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -34,10 +47,7 @@ function doPost(e) {
 
   sheet.appendRow(row);
 
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: "ok" }))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeader("Access-Control-Allow-Origin", "*");
+  return buildCorsResponse({ status: "ok" });
 }
 ```
 

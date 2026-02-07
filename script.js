@@ -1,4 +1,4 @@
-const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby7MVq68lR21oqV58brxAgGiEc_K0WNMbosgcGjqlMEsmUq9at0sMPQ2J8RjRb-oMr8/exec";
+const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxNb_SWThf3K3531wYLfu1bVk89Mbkf-luRsurvorEoF2Dkiu7E2Vk4vLjVcoHXw9Rz0g/exec";
 
 const questions = [
   "When did we first meet?",
@@ -80,7 +80,7 @@ const submitToSheet = async (payload) => {
     method: "POST",
     mode: "cors",
     headers: {
-      "Content-Type": "text/plain;charset=utf-8",
+      "Content-Type": "text/plain",
     },
     body: JSON.stringify(payload),
   });
