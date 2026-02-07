@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Friendship Quiz</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <header class="header">
+          <p class="badge">Friendship Quiz</p>
+          <h1>How well do you know me?</h1>
+          <p class="subtle">
+            Answer 10 fun questions. No right or wrong—just vibes.
+          </p>
+        </header>
+
+        <form id="quizForm" class="quiz">
+          <div class="question">
+            <label for="friendName">Your name</label>
+            <input
+              type="text"
+              id="friendName"
+              name="friendName"
+              placeholder="So I know who answered"
+              autocomplete="name"
+            />
+          </div>
+          <div id="questions" class="questions"></div>
+          <div class="actions">
+            <button type="submit" class="btn">Finish Quiz</button>
+            <button type="button" id="resetBtn" class="btn ghost">
+              Reset
+            </button>
+          </div>
+        </form>
+
+        <section id="result" class="result hidden" aria-live="polite"></section>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
